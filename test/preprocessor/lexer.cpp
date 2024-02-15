@@ -267,10 +267,10 @@ TEST(Lexer, HelloWorldWithMorePreprocessorDirectives) {
   ASSERT_TOKEN(CEOF);
 }
 
-TEST(Lexer, HelloWorldWithComments) {
+TEST(Lexer, HelloWorldWithCommentsAndLineSplices) {
   // Preprocessor directives can be anywhere in the source code and there can be any whitespace before or after the hashtag
   std::string source = "\t\t#\r\r\n\tinclude <stdio.h>\n"
-                       "\n"
+                       "\\\n" // Line splice so the newline is ignored
                        "\r\t#\t\t\ndefine HELLO \"Hello, World!\\n\"\n"
                        "int main() { // This comment shouldn't affect anything!!\n"
                        " /* This should also do nothing \n */ printf(HELLO);\n"
@@ -288,8 +288,7 @@ TEST(Lexer, HelloWorldWithComments) {
   ASSERT_TOKEN(COperator_Dot);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(COperator_GreaterThan);
-  ASSERT_TOKEN(CPunctuation_newline);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CPunctuation_newline); // Only one newline because of the line splice
   ASSERT_TOKEN(CPreprocessorDirective_Define);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(CConstant_String);
