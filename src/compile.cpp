@@ -1,7 +1,7 @@
 #include <compile.h>
-#include <preprocessor.h>
+#include <preprocessor/preprocessor.h>
+#include <args.h>
 
-int compile(const std::string& source) {
-  std::string sourceWithoutTrigraphs = removeTrigraphs(source);
-  return 0;
+int compile(Args *args) {
+  
 }

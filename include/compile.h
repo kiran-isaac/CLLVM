@@ -1,5 +1,9 @@
-#ifndef BDCDF083_2366_4C57_A898_79083F69F20B
-#define BDCDF083_2366_4C57_A898_79083F69F20B
+#ifndef CLLVM_COMPILE_H
+#define CLLVM_COMPILE_H
 
+#include <string>
+#include <args.h>
 
-#endif /* BDCDF083_2366_4C57_A898_79083F69F20B */
+int compile(Args *args);
+
+#endif /* CLLVM_COMPILE_H */
