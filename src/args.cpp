@@ -29,8 +29,8 @@ Args::Args(int argc, char** argv) {
   }
 }
 
-std::string Args::loadSourceToString(std::string source) {
-  std::ifstream file(source);
+std::string Args::loadSourceToString(std::string filename) {
+  std::ifstream file(filename);
   std::string str;
   std::string file_contents;
   while (std::getline(file, str)) {

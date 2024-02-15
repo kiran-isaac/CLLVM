@@ -34,7 +34,7 @@ target_link_libraries(CLLVM LLVM)
 
 # Add the test executable
 
-file(GLOB_RECURSE TEST_SOURCES "src/*.cpp" "src/*.c")
+file(GLOB_RECURSE TEST_SOURCES "src/*.cpp" "src/*.c" "test/*.cpp" "test/*.c")
 list(FILTER TEST_SOURCES EXCLUDE REGEX ".*main.cpp")
 
 # dont include files used
