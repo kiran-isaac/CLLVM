@@ -1,5 +1,5 @@
-#ifndef CLLVM_PREPROCESSOR_H
-#define CLLVM_PREPROCESSOR_H
+#ifndef CLLVM_PREPROCESSOR_PREPROCESSOR_H
+#define CLLVM_PREPROCESSOR_PREPROCESSOR_H
 
 #include <string>
 
@@ -18,5 +18,8 @@ struct Token {
 };
 
 std::string removeTrigraphs(const std::string& source);
+std::string removeLineSplices(const std::string& source);
 
-#endif /* CLLVM_PREPROCESSOR_H */
+std::string preprocess(const std::string& source);
+
+#endif /* CLLVM_PREPROCESSOR_PREPROCESSOR_H */
