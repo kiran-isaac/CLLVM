@@ -183,7 +183,23 @@ TEST(Lexer, PreprocessorDirective) {
   }
 }
 
-#define ASSERT_TOKEN(x) ASSERT_EQ(token.type, CToken::x);token = lexer.next_token();
+#define ASSERT_TOKEN(x)                                                        \
+  ASSERT_EQ(token.type, CToken::x);                                            \
+  token = lexer.next_token();
+
+TEST(Lexer, StringsAreMatchedCorrectly) {
+  std::string source = "  printf(\"Hello, World!\n\");\n"
+                       "  printf(\"Hello, World!\n\")";
+
+  Lexer lexer = Lexer(source);
+  Token token = lexer.next_token();
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_TOKEN(CPunctuation_LeftParenthesis);
+  ASSERT_TOKEN(CConstant_String);
+  ASSERT_TOKEN(CPunctuation_RightParenthesis);
+  ASSERT_TOKEN(CPunctuation_Semicolon);
+
+}
 
 TEST(Lexer, HelloWorld) {
   std::string source = "#include <stdio.h>\n"

@@ -223,7 +223,7 @@ static vector<pair<CToken, string>> tokenRegexMap = {
 
     {CToken::CConstant_Float, "^[ \r\t\n]*\\d+\\.\\d+"},
     {CToken::CConstant_Integer, "^[ \r\t\n]*\\d+"},
-    {CToken::CConstant_String, "^[ \r\t\n]*\"((\\n|\\t|\\r|\\v|\\f|\\b|\\a|\\\\|\\?|\\'|\\\")|.)*\""},
+    {CToken::CConstant_String, "^[ \r\t\n]*\"((\\n|\\t|\\r|\\v|\\f|\\b|\\a|\\\\|\\?|\\'|\\\")|.)*?\""},
     {CToken::CConstant_Character, "^[ \r\t\n]*'((\\n|\\t|\\r|\\v|\\f|\\b|\\a|\\\\|\\?|\\'|\\\")|.)'"},
 
     {CToken::CPreprocessorDirective_Include, "^[ \r\t\n]*#[ \r\t\n]*include"},
