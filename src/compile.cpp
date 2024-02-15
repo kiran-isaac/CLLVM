@@ -8,4 +8,6 @@ int compile(Args *args) {
 
     pre_tokenization_processing(source);
   }
+
+  return 1;
 }

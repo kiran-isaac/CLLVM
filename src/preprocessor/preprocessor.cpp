@@ -49,3 +49,7 @@ void pre_tokenization_processing(std::string &source) {
   // Translation phase 3: Comments
   removeComments(source);
 }
+
+void executePreprocessorDirectives(Lexer &lexer) {
+
+}
