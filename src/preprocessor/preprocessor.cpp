@@ -1,59 +1,51 @@
 #include <preprocessor/preprocessor.h>
 
-std::string removeTrigraphs(const std::string& source) {
-  std::string sourceWithoutTrigraphs = source;
+void removeTrigraphs(std::string &source) {
   std::string trigraphs[] = {"??=", "??/", "??'", "??(", "??)",
                              "??!", "??<", "??>", "??-", "??!"};
   std::string replacements[] = {"#", "\\", "^", "[", "]",
                                 "|", "{",  "}", "~", "!"};
+
   for (int i = 0; i < 10; i++) {
-    size_t pos = sourceWithoutTrigraphs.find(trigraphs[i]);
+    size_t pos = source.find(trigraphs[i]);
     while (pos != std::string::npos) {
-      sourceWithoutTrigraphs.replace(pos, 3, replacements[i]);
-      pos = sourceWithoutTrigraphs.find(trigraphs[i]);
+      source.replace(pos, 3, replacements[i]);
+      pos = source.find(trigraphs[i]);
     }
   }
-  return sourceWithoutTrigraphs;
 }
 
-std::string removeLineSplices(const std::string& source) {
-  std::string sourceWithoutLineSplices = source;
-  size_t pos = sourceWithoutLineSplices.find("\\\n");
+void removeLineSplices(std::string &source) {
+  size_t pos = source.find("\\\n");
   while (pos != std::string::npos) {
-    sourceWithoutLineSplices.replace(pos, 2, "");
-    pos = sourceWithoutLineSplices.find("\\\n");
+    source.replace(pos, 2, "");
+    pos = source.find("\\\n");
   }
-  return sourceWithoutLineSplices;
 }
 
-std::string removeComments(const std::string& source) {
-  std::string sourceWithoutComments = source;
-  size_t pos = sourceWithoutComments.find("//");
+void removeComments(std::string &source) {
+  size_t pos = source.find("//");
   while (pos != std::string::npos) {
-    size_t end = sourceWithoutComments.find("\n", pos);
-    sourceWithoutComments.replace(pos, end - pos, "");
-    pos = sourceWithoutComments.find("//");
+    size_t end = source.find("\n", pos);
+    source.replace(pos, end - pos, "");
+    pos = source.find("//");
   }
 
-  pos = sourceWithoutComments.find("/*");
+  pos = source.find("/*");
   while (pos != std::string::npos) {
-    size_t end = sourceWithoutComments.find("*/", pos);
-    sourceWithoutComments.replace(pos, end - pos + 2, "");
-    pos = sourceWithoutComments.find("/*");
+    size_t end = source.find("*/", pos);
+    source.replace(pos, end - pos + 2, "");
+    pos = source.find("/*");
   }
-
-  return sourceWithoutComments;
 }
 
-std::string preprocess(const std::string& source) {
+void preprocess(std::string &source) {
   // Translation phase 1: Trigraphs
-  std::string sourceWithoutTrigraphs = removeTrigraphs(source);
+  removeTrigraphs(source);
 
   // Translation phase 2: Line splices
-  std::string sourceWithoutLineSplices = removeLineSplices(sourceWithoutTrigraphs);
+  removeLineSplices(source);
 
-  // Translation phase 3: Comments, and tokenising into preprocessor tokens
-  std::string sourceWithoutComments = removeComments(sourceWithoutLineSplices);
-  return sourceWithoutLineSplices;
+  // Translation phase 3: Comments
+  removeComments(source);
 }
-

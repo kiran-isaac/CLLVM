@@ -17,10 +17,10 @@ struct Token {
   std::string value;
 };
 
-std::string removeTrigraphs(const std::string& source);
-std::string removeLineSplices(const std::string& source);
-std::string removeComments(const std::string& source);
+void removeTrigraphs(std::string& source);
+void removeLineSplices(std::string& source);
+void removeComments(std::string& source);
 
-std::string preprocess(const std::string& source);
+void preprocess(const std::string& source);
 
 #endif /* CLLVM_PREPROCESSOR_PREPROCESSOR_H */
