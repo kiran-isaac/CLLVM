@@ -10,8 +10,8 @@ TEST(Preprocessor, RemoveTrigraphs) {
 }
 
 TEST(Preprocessor, RemoveLineSplices) {
-  std::string source = "line1 \\\n"
-                       "line2 \\\n"
+  std::string source = "line1 \\  \n"
+                       "line2 \\\t\t\r   \n"
                        "line3";
   std::string expected = "line1 line2 line3";
   removeLineSplices(source);

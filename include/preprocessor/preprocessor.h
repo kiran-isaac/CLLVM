@@ -2,6 +2,7 @@
 #define CLLVM_PREPROCESSOR_PREPROCESSOR_H
 
 #include <string>
+#include <regex>
 
 void removeTrigraphs(std::string& source);
 void removeLineSplices(std::string& source);

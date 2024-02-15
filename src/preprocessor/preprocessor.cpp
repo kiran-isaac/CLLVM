@@ -16,10 +16,10 @@ void removeTrigraphs(std::string &source) {
 }
 
 void removeLineSplices(std::string &source) {
-  size_t pos = source.find("\\\n");
-  while (pos != std::string::npos) {
-    source.replace(pos, 2, "");
-    pos = source.find("\\\n");
+  std::regex e("\\\\[ \t\r]*\n");
+  std::smatch m;
+  while (std::regex_search(source, m, e)) {
+    source.replace(m.position(), m.length(), "");
   }
 }
 
