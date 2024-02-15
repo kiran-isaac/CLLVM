@@ -19,6 +19,7 @@ struct Token {
 
 std::string removeTrigraphs(const std::string& source);
 std::string removeLineSplices(const std::string& source);
+std::string removeComments(const std::string& source);
 
 std::string preprocess(const std::string& source);
 

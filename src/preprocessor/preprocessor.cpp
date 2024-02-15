@@ -26,12 +26,34 @@ std::string removeLineSplices(const std::string& source) {
   return sourceWithoutLineSplices;
 }
 
+std::string removeComments(const std::string& source) {
+  std::string sourceWithoutComments = source;
+  size_t pos = sourceWithoutComments.find("//");
+  while (pos != std::string::npos) {
+    size_t end = sourceWithoutComments.find("\n", pos);
+    sourceWithoutComments.replace(pos, end - pos, "");
+    pos = sourceWithoutComments.find("//");
+  }
+
+  pos = sourceWithoutComments.find("/*");
+  while (pos != std::string::npos) {
+    size_t end = sourceWithoutComments.find("*/", pos);
+    sourceWithoutComments.replace(pos, end - pos + 2, "");
+    pos = sourceWithoutComments.find("/*");
+  }
+
+  return sourceWithoutComments;
+}
+
 std::string preprocess(const std::string& source) {
   // Translation phase 1: Trigraphs
   std::string sourceWithoutTrigraphs = removeTrigraphs(source);
 
   // Translation phase 2: Line splices
   std::string sourceWithoutLineSplices = removeLineSplices(sourceWithoutTrigraphs);
+
+  // Translation phase 3: Comments, and tokenising into preprocessor tokens
+  std::string sourceWithoutComments = removeComments(sourceWithoutLineSplices);
   return sourceWithoutLineSplices;
 }
 
