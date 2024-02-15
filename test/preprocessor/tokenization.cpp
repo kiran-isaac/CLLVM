@@ -95,7 +95,7 @@ TEST(Lexer, Operator) {
   //  COperator_Arrow,
   //  COperator_Dot,
   std::string source = "+ - * / % = += -= *= /= %= ++ -- == != < > <= >= && || "
-                       "! & | ~ ^ << >> &= |= ^= <<= >>= ? , -> .";
+                       "! & | ~ ^ << >> &= |= ^= <<= >>= ? -> .";
   Lexer lexer = Lexer(source);
   CToken actual = lexer.next_token().type;
 
@@ -121,7 +121,7 @@ TEST(Lexer, Punctuation) {
   //  CPunctuation_Semicolon,
   //  CPunctuation_Colon,
   //  CPunctuation_Ellipsis,
-  std::string source = "( ) [ ] { } ; : ... , # ##";
+  std::string source = "( ) { } [ ] , ; : ...";
   Lexer lexer = Lexer(source);
   CToken actual = lexer.next_token().type;
 

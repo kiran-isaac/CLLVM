@@ -77,7 +77,6 @@ enum class CToken {
   COperator_BitwiseLeftShiftAssignment,
   COperator_BitwiseRightShiftAssignment,
   COperator_Ternary,
-  COperator_Comma,
   COperator_Arrow,
   COperator_Dot,
 
@@ -172,6 +171,17 @@ static vector<pair<CToken, string>> tokenRegexMap = {
 
     {CToken::CIdentifier, "[a-zA-Z_][a-zA-Z0-9_]*"},
 
+    {CToken::CPunctuation_LeftParenthesis, "\\("},
+    {CToken::CPunctuation_RightParenthesis, "\\)"},
+    {CToken::CPunctuation_LeftBrace, "\\{"},
+    {CToken::CPunctuation_RightBrace, "\\}"},
+    {CToken::CPunctuation_LeftBracket, "\\["},
+    {CToken::CPunctuation_RightBracket, "\\]"},
+    {CToken::CPunctuation_Comma, ","},
+    {CToken::CPunctuation_Semicolon, ";"},
+    {CToken::CPunctuation_Colon, ":"},
+    {CToken::CPunctuation_Ellipsis, "\\.{3}"},
+
     {CToken::COperator_PlusAssignment, "\\+="},
     {CToken::COperator_MinusAssignment, "-="},
     {CToken::COperator_MultiplyAssignment, "\\*="},
@@ -191,7 +201,6 @@ static vector<pair<CToken, string>> tokenRegexMap = {
     {CToken::COperator_BitwiseLeftShiftAssignment, "<<="},
     {CToken::COperator_BitwiseRightShiftAssignment, ">>="},
     {CToken::COperator_Ternary, "\\?"},
-    {CToken::COperator_Comma, ","},
     {CToken::COperator_Arrow, "->"},
     {CToken::COperator_Dot, "\\."},
     {CToken::COperator_Plus, "\\+"},
@@ -209,17 +218,6 @@ static vector<pair<CToken, string>> tokenRegexMap = {
     {CToken::COperator_BitwiseRightShift, ">>"},
     {CToken::COperator_LessThan, "<"},
     {CToken::COperator_GreaterThan, ">"},
-
-    {CToken::CPunctuation_LeftParenthesis, "\\("},
-    {CToken::CPunctuation_RightParenthesis, "\\)"},
-    {CToken::CPunctuation_LeftBrace, "\\{"},
-    {CToken::CPunctuation_RightBrace, "\\}"},
-    {CToken::CPunctuation_LeftBracket, "\\["},
-    {CToken::CPunctuation_RightBracket, "\\]"},
-    {CToken::CPunctuation_Comma, ","},
-    {CToken::CPunctuation_Semicolon, ";"},
-    {CToken::CPunctuation_Colon, ":"},
-    {CToken::CPunctuation_Ellipsis, "\\.{3}"},
 
     {CToken::CConstant_Float, "\\d+\\.\\d+"},
     {CToken::CConstant_Integer, "\\d+"},
