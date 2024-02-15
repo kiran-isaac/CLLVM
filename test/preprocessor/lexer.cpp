@@ -217,30 +217,31 @@ TEST(Lexer, HelloWorld) {
   ASSERT_TOKEN(COperator_Dot);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(COperator_GreaterThan);
-  ASSERT_TOKEN(CPunctuation_newline);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CKeyword_Int);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(CPunctuation_LeftParenthesis);
   ASSERT_TOKEN(CPunctuation_RightParenthesis);
   ASSERT_TOKEN(CPunctuation_LeftBrace);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(CPunctuation_LeftParenthesis);
   ASSERT_TOKEN(CConstant_String);
   ASSERT_TOKEN(CPunctuation_RightParenthesis);
   ASSERT_TOKEN(CPunctuation_Semicolon);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CKeyword_Return);
   ASSERT_TOKEN(CConstant_Integer);
   ASSERT_TOKEN(CPunctuation_Semicolon);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CPunctuation_RightBrace);
   ASSERT_TOKEN(CEOF);
 }
 
 TEST(Lexer, HelloWorldWithMorePreprocessorDirectives) {
-  // Preprocessor directives can be anywhere in the source code and there can be any whitespace before or after the hashtag
+  // Preprocessor directives can be anywhere in the source code and there can be
+  // any whitespace before or after the hashtag
   std::string source = "\t\t#\r\r\n\tinclude <stdio.h>\n"
                        "\n"
                        "\r\t#\t\t\ndefine HELLO \"Hello, World!\\n\"\n"
@@ -257,41 +258,43 @@ TEST(Lexer, HelloWorldWithMorePreprocessorDirectives) {
   ASSERT_TOKEN(COperator_Dot);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(COperator_GreaterThan);
-  ASSERT_TOKEN(CPunctuation_newline);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CPreprocessorDirective_Define);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(CConstant_String);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CKeyword_Int);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(CPunctuation_LeftParenthesis);
   ASSERT_TOKEN(CPunctuation_RightParenthesis);
   ASSERT_TOKEN(CPunctuation_LeftBrace);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(CPunctuation_LeftParenthesis);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(CPunctuation_RightParenthesis);
   ASSERT_TOKEN(CPunctuation_Semicolon);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CKeyword_Return);
   ASSERT_TOKEN(CConstant_Integer);
   ASSERT_TOKEN(CPunctuation_Semicolon);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CPunctuation_RightBrace);
   ASSERT_TOKEN(CEOF);
 }
 
 TEST(Lexer, HelloWorldWithCommentsAndLineSplices) {
-  // Preprocessor directives can be anywhere in the source code and there can be any whitespace before or after the hashtag
-  std::string source = "\t\t#\r\r\n\tinclude <stdio.h>\n"
-                       "\\\n" // Line splice so the newline is ignored
-                       "\r\t#\t\t\ndefine HELLO \"Hello, World!\\n\"\n"
-                       "int main() { // This comment shouldn't affect anything!!\n"
-                       " /* This should also do nothing \n */ printf(HELLO);\n"
-                       "  return 0;\n"
-                       "}";
+  // Preprocessor directives can be anywhere in the source code and there can be
+  // any whitespace before or after the hashtag
+  std::string source =
+      "\t\t#\r\r\n\tinclude <stdio.h>\n"
+      "\\\n" // Line splice so the newline is ignored
+      "\r\t#\t\t\ndefine HELLO \"Hello, World!\\n\"\n"
+      "int main() { // This comment shouldn't affect anything!!\n"
+      " /* This should also do nothing \n */ printf(HELLO);\n"
+      "  return 0;\n"
+      "}";
 
   pre_tokenization_processing(source);
 
@@ -304,27 +307,84 @@ TEST(Lexer, HelloWorldWithCommentsAndLineSplices) {
   ASSERT_TOKEN(COperator_Dot);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(COperator_GreaterThan);
-  ASSERT_TOKEN(CPunctuation_newline); // Only one newline because of the line splice
+  ASSERT_TOKEN(CNewline); // Only one newline because of the line splice
   ASSERT_TOKEN(CPreprocessorDirective_Define);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(CConstant_String);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CKeyword_Int);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(CPunctuation_LeftParenthesis);
   ASSERT_TOKEN(CPunctuation_RightParenthesis);
   ASSERT_TOKEN(CPunctuation_LeftBrace);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(CPunctuation_LeftParenthesis);
   ASSERT_TOKEN(CIdentifier);
   ASSERT_TOKEN(CPunctuation_RightParenthesis);
   ASSERT_TOKEN(CPunctuation_Semicolon);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CKeyword_Return);
   ASSERT_TOKEN(CConstant_Integer);
   ASSERT_TOKEN(CPunctuation_Semicolon);
-  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CNewline);
   ASSERT_TOKEN(CPunctuation_RightBrace);
   ASSERT_TOKEN(CEOF);
 }
+
+TEST(Lexer, OneLineColumnPosTest) {
+  std::string source = "  printf(\"Hello, World!\n\");\n";
+
+  Lexer lexer = Lexer(source);
+  Token token = lexer.next_token();
+
+  ASSERT_EQ(token.column, 3);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_EQ(token.column, 9);
+  ASSERT_TOKEN(CPunctuation_LeftParenthesis);
+  ASSERT_EQ(token.column, 10);
+  ASSERT_TOKEN(CConstant_String);
+  ASSERT_EQ(token.column, 26);
+  ASSERT_TOKEN(CPunctuation_RightParenthesis);
+  ASSERT_EQ(token.column, 27);
+  ASSERT_TOKEN(CPunctuation_Semicolon);
+  ASSERT_EQ(token.column, 28);
+  ASSERT_TOKEN(CNewline);
+  ASSERT_EQ(token.column, 1);
+}
+
+TEST(Lexer, MultiLineColumnPosTest) {
+  std::string source = "  printf(\"Hello, World!\n\");\n"
+                       "  printf(\"Hello, World!\n\");\n";
+
+  Lexer lexer = Lexer(source);
+  Token token = lexer.next_token();
+
+  ASSERT_EQ(token.column, 3);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_EQ(token.column, 9);
+  ASSERT_TOKEN(CPunctuation_LeftParenthesis);
+  ASSERT_EQ(token.column, 10);
+  ASSERT_TOKEN(CConstant_String);
+  ASSERT_EQ(token.column, 26);
+  ASSERT_TOKEN(CPunctuation_RightParenthesis);
+  ASSERT_EQ(token.column, 27);
+  ASSERT_TOKEN(CPunctuation_Semicolon);
+  ASSERT_EQ(token.column, 28);
+
+  ASSERT_TOKEN(CNewline);
+
+  ASSERT_EQ(token.column, 3);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_EQ(token.column, 9);
+  ASSERT_TOKEN(CPunctuation_LeftParenthesis);
+  ASSERT_EQ(token.column, 10);
+  ASSERT_TOKEN(CConstant_String);
+  ASSERT_EQ(token.column, 26);
+  ASSERT_TOKEN(CPunctuation_RightParenthesis);
+  ASSERT_EQ(token.column, 27);
+  ASSERT_TOKEN(CPunctuation_Semicolon);
+  ASSERT_EQ(token.column, 28);
+}
+
+// TODO make the line counts work after line splicing

@@ -8,6 +8,8 @@
 #include <vector>
 
 enum class CToken {
+  CNewline,
+
   CKeyword_Auto,
   CKeyword_Struct,
   CKeyword_Break,
@@ -80,7 +82,6 @@ enum class CToken {
   COperator_Arrow,
   COperator_Dot,
 
-  CPunctuation_newline,
   CPunctuation_LeftParenthesis,
   CPunctuation_RightParenthesis,
   CPunctuation_LeftBrace,
@@ -130,14 +131,21 @@ class Token {
 public:
   CToken type;
   std::string value;
+  size_t line;
+  size_t column;
 
-  Token(CToken type, std::string value);
+  Token(CToken type, std::string value, size_t line, size_t column) {
+    this->type = type;
+    this->value = value;
+    this->line = line;
+    this->column = column;
+  }
 };
 
 using std::map, std::string, std::vector, std::pair, std::regex;
 
 static vector<pair<CToken, string>> tokenRegexMap = {
-    {CToken::CPunctuation_newline, "^[ \r\t]*\\n"},
+    {CToken::CNewline, "^[ \r\t]*\\n"},
 
     {CToken::CKeyword_Auto, "^[ \r\t\n]*auto"},
     {CToken::CKeyword_Struct, "^[ \r\t\n]*struct"},

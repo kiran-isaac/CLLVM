@@ -10,6 +10,8 @@ public:
   Token next_token();
   void resetCursor() { tokenCursor = 0; }
 private:
+  int line = 1;
+  int column = 1;
   int index = 0;
   std::string source;
 

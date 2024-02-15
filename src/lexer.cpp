@@ -4,11 +4,6 @@
 #include <string>
 #include <tokens.h>
 
-Token::Token(CToken type, std::string value) {
-  this->type = type;
-  this->value = value;
-}
-
 Lexer::Lexer(std::string source) {
   this->source = source;
   this->index = 0;
@@ -32,16 +27,27 @@ bool Lexer::generateToken() {
       std::smatch m;
       if (std::regex_search(s, m, e) && m.position() == 0) {
         this->index = i + m.length();
-        string str = stripWhitespace(m.str());
-        this->tokens.push_back(Token(key, str));
+        string str = m.str();
+
+        if (key == CToken::CNewline) {
+          line++;
+          this->tokens.push_back(Token(key, str, line, column));
+          column = 1;
+        } else {
+          // add the amount of head whitespace to the column
+          int precedingWhitespaceLength = str.find_first_not_of(" \t");
+          this->tokens.push_back(Token(key, str, line, column + precedingWhitespaceLength));
+          column += m.length();
+        }
+
         return true;
       }
     }
   }
 
   if (this->index == this->source.length()) {
-    this->tokens.push_back(Token(CToken::CEOF, ""));
-        return true;
+    this->tokens.push_back(Token(CToken::CEOF, "", line, column));
+    return true;
   }
 
   return false;
