@@ -13,7 +13,6 @@ public:
   std::string lib;
   std::string flags;
   Args(int argc, char** argv);
-  ~Args();
   std::string loadSourceToString(std::string source);
 };
 
