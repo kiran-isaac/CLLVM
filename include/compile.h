@@ -7,6 +7,6 @@
 
 using std::string;
 
-int compile(Args *args);
+int compile(string source, Args *args);
 
 #endif /* CLLVM_COMPILE_H */

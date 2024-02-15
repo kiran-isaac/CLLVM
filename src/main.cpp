@@ -4,6 +4,10 @@
 
 int main(int argc, char** argv) {
   Args *args = new Args(argc, argv);
-  compile(args);
-  delete args;
+
+  for (int i = 0; i < args->source.length(); i++) {
+    string source = args->loadSourceToString(args->source);
+
+    compile(source, args);
+  }
 }
