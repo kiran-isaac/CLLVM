@@ -124,16 +124,6 @@ enum class CToken {
   CToken_Unknown
 };
 
-enum class PreprocessorDirective {
-  PreprocessorDirective_Include, // #include
-  PreprocessorDirective_Define, // #define
-  PreprocessorDirective_Undef, // #undef
-  PreprocessorDirective_If, // #if
-  PreprocessorDirective_Ifdef, // #ifdef
-  PreprocessorDirective_Ifndef, // #ifndef
-  
-};
-
 union CTokenValue {
   CKeyword keyword;
   COperator op;
