@@ -22,7 +22,7 @@ include_directories(${LLVM_INCLUDE_DIRS})
 add_definitions(${LLVM_DEFINITIONS})
 
 # Find all the source files
-file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.c" "include/*.h" "include/*.hpp")
 list(FILTER SOURCES EXCLUDE REGEX ".*main.cpp")
 list(FILTER SOURCES EXCLUDE REGEX ".*test/.*")
 
@@ -34,10 +34,14 @@ target_link_libraries(CLLVM LLVM)
 
 # Add the test executable
 
-file(GLOB_RECURSE TEST_SOURCES "src/*.cpp")
+file(GLOB_RECURSE TEST_SOURCES "src/*.cpp" "src/*.c" "include/*.h" "include/*.hpp" "test/*.cpp" "test/*.c" "test/*.h" "test/*.hpp")
 list(FILTER TEST_SOURCES EXCLUDE REGEX ".*main.cpp")
 
-add_executable(test ${TEST_SOURCES})
+# dont include files used
+list(FILTER TEST_SOURCES EXCLUDE REGEX ".*/test_files/*")
+
+add_executable(test ${TEST_SOURCES}
+        include/tokens.h)
 
 # Link against LLVM libraries
 target_link_libraries(test LLVM)

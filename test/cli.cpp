@@ -14,6 +14,6 @@ TEST(CLI, args_parse) {
   };
   Args args = Args(argc, argv);
   ASSERT_EQ(args.output, "output");
-  ASSERT_EQ(args.includePath, "includePath");
+  ASSERT_EQ(args.includePaths[0], "includePath");
   ASSERT_EQ(args.libPath, "libPath");
 }

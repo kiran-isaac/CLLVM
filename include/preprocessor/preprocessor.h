@@ -3,23 +3,10 @@
 
 #include <string>
 
-enum class PreprocessorDirective {
-  PreprocessorDirective_Include, // #include
-  PreprocessorDirective_Define, // #define
-  PreprocessorDirective_Undef, // #undef
-  PreprocessorDirective_If, // #if
-  PreprocessorDirective_Ifdef, // #ifdef
-  PreprocessorDirective_Ifndef, // #ifndef
-};
+void removeTrigraphs(std::string& source);
+void removeLineSplices(std::string& source);
+void removeComments(std::string& source);
 
-struct Token {
-  PreprocessorDirective type;
-  std::string value;
-};
-
-std::string removeTrigraphs(const std::string& source);
-std::string removeLineSplices(const std::string& source);
-
-std::string preprocess(const std::string& source);
+void preprocess(std::string& source);
 
 #endif /* CLLVM_PREPROCESSOR_PREPROCESSOR_H */
