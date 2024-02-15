@@ -7,6 +7,6 @@ void removeTrigraphs(std::string& source);
 void removeLineSplices(std::string& source);
 void removeComments(std::string& source);
 
-void preprocess(std::string& source);
+void pre_tokenization_processing(std::string& source);
 
 #endif /* CLLVM_PREPROCESSOR_PREPROCESSOR_H */
