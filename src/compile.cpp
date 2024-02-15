@@ -1,8 +1,10 @@
 #include <compile.h>
-#include <preprocessor.h>
+#include <args.h>
 
-int compile(const std::string& source) {
-  std::string sourceWithoutTrigraphs = removeTrigraphs(source);
-  console.log(sourceWithoutTrigraphs);
-  return 0;
+int compile(Args *args) {
+  for (int i = 0; i < args->source.length(); i++) {
+    string source = args->loadSourceToString(args->source);
+
+    source = preprocess(source);
+  }
 }

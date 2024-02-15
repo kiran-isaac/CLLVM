@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <args.h>
+#include <compile.h>
 
-int main() {
-  printf("Hello, World!\n");
-  return 0;
+int main(int argc, char** argv) {
+  Args *args = new Args(argc, argv);
+  compile(args);
+  delete args;
 }
