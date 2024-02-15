@@ -167,7 +167,7 @@ TEST(Lexer, PreprocessorDirective) {
   //  CPreprocessorDirective_Else,
   //  CPreprocessorDirective_Endif,
   //  CPreprocessorDirective_Error,
-  std::string source = "#include #define #   undef #\tif \r\n\t\t# \r\nifdef "
+  std::string source = "#include #define #   undef #\tif \r\t\t# \rifdef "
                        "#ifndef #elif #else #\nendif #error";
   Lexer lexer = Lexer(source);
   CToken actual = lexer.next_token().type;
@@ -199,19 +199,24 @@ TEST(Lexer, HelloWorld) {
   ASSERT_EQ(token.type, CToken::COperator_Dot);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CIdentifier);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::COperator_GreaterThan);token = lexer.next_token();
+  ASSERT_EQ(token.type, CToken::CPunctuation_newline);token = lexer.next_token();
+  ASSERT_EQ(token.type, CToken::CPunctuation_newline);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CKeyword_Int);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CIdentifier);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CPunctuation_LeftParenthesis);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CPunctuation_RightParenthesis);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CPunctuation_LeftBrace);token = lexer.next_token();
+  ASSERT_EQ(token.type, CToken::CPunctuation_newline);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CIdentifier);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CPunctuation_LeftParenthesis);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CConstant_String);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CPunctuation_RightParenthesis);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CPunctuation_Semicolon);token = lexer.next_token();
+  ASSERT_EQ(token.type, CToken::CPunctuation_newline);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CKeyword_Return);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CConstant_Integer);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CPunctuation_Semicolon);token = lexer.next_token();
+  ASSERT_EQ(token.type, CToken::CPunctuation_newline);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CPunctuation_RightBrace);token = lexer.next_token();
   ASSERT_EQ(token.type, CToken::CEOF);
 }
