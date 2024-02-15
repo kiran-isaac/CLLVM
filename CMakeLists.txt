@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 project(CLLVM)
 
 include(FetchContent)
+find_package(LLVM REQUIRED CONFIG)
 
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
@@ -17,15 +18,10 @@ endif()
 set(CMAKE_CXX_FLAGS "-Wno-trigraphs")
 
 include_directories(include)
+include_directories(${LLVM_INCLUDE_DIRS})
+add_definitions(${LLVM_DEFINITIONS})
 
-# Add the LLVM include directory
-include_directories(/usr/local/opt/llvm/include)
-
-# Add the LLVM library directory
-link_directories(/usr/local/opt/llvm/lib)
-
-# All files with a .cpp extension will be considered C++ source files excluding main.cpp and the files in the test directory 
-
+# Find all the source files
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 list(FILTER SOURCES EXCLUDE REGEX ".*main.cpp")
 list(FILTER SOURCES EXCLUDE REGEX ".*test/.*")
