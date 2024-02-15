@@ -5,6 +5,15 @@ set(CMAKE_CXX_STANDARD 17)
 project(CLLVM)
 
 include(FetchContent)
+
+if (NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(CMAKE_CXX_FLAGS "-g")
+endif()
+
 set(CMAKE_CXX_FLAGS "-Wno-trigraphs")
 
 include_directories(include)
@@ -49,3 +58,5 @@ FetchContent_MakeAvailable(googletest)
 
 # Link against gtest
 target_link_libraries(test gtest_main)
+
+add_test(NAME test COMMAND test)
