@@ -183,6 +183,8 @@ TEST(Lexer, PreprocessorDirective) {
   }
 }
 
+#define ASSERT_TOKEN(x) ASSERT_EQ(token.type, CToken::x);token = lexer.next_token();
+
 TEST(Lexer, HelloWorld) {
   std::string source = "#include <stdio.h>\n"
                        "\n"
@@ -193,30 +195,74 @@ TEST(Lexer, HelloWorld) {
   Lexer lexer = Lexer(source);
 
   Token token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPreprocessorDirective_Include);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::COperator_LessThan);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CIdentifier);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::COperator_Dot);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CIdentifier);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::COperator_GreaterThan);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_newline);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_newline);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CKeyword_Int);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CIdentifier);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_LeftParenthesis);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_RightParenthesis);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_LeftBrace);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_newline);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CIdentifier);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_LeftParenthesis);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CConstant_String);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_RightParenthesis);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_Semicolon);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_newline);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CKeyword_Return);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CConstant_Integer);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_Semicolon);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_newline);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CPunctuation_RightBrace);token = lexer.next_token();
-  ASSERT_EQ(token.type, CToken::CEOF);
+  ASSERT_TOKEN(CPreprocessorDirective_Include);
+  ASSERT_TOKEN(COperator_LessThan);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_TOKEN(COperator_Dot);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_TOKEN(COperator_GreaterThan);
+  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CKeyword_Int);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_TOKEN(CPunctuation_LeftParenthesis);
+  ASSERT_TOKEN(CPunctuation_RightParenthesis);
+  ASSERT_TOKEN(CPunctuation_LeftBrace);
+  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_TOKEN(CPunctuation_LeftParenthesis);
+  ASSERT_TOKEN(CConstant_String);
+  ASSERT_TOKEN(CPunctuation_RightParenthesis);
+  ASSERT_TOKEN(CPunctuation_Semicolon);
+  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CKeyword_Return);
+  ASSERT_TOKEN(CConstant_Integer);
+  ASSERT_TOKEN(CPunctuation_Semicolon);
+  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CPunctuation_RightBrace);
+  ASSERT_TOKEN(CEOF);
+}
+
+TEST(Lexer, HelloWorldWithMorePreprocessorDirectives) {
+  // Preprocessor directives can be anywhere in the source code and there can be any whitespace before or after the hashtag
+  std::string source = "\t\t#\r\r\n\tinclude <stdio.h>\n"
+                       "\n"
+                       "\r\t#\t\t\ndefine HELLO \"Hello, World!\\n\"\n"
+                       "int main() {\n"
+                       "  printf(HELLO);\n"
+                       "  return 0;\n"
+                       "}";
+  Lexer lexer = Lexer(source);
+
+  Token token = lexer.next_token();
+  ASSERT_TOKEN(CPreprocessorDirective_Include);
+  ASSERT_TOKEN(COperator_LessThan);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_TOKEN(COperator_Dot);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_TOKEN(COperator_GreaterThan);
+  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CPreprocessorDirective_Define);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_TOKEN(CConstant_String);
+  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CKeyword_Int);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_TOKEN(CPunctuation_LeftParenthesis);
+  ASSERT_TOKEN(CPunctuation_RightParenthesis);
+  ASSERT_TOKEN(CPunctuation_LeftBrace);
+  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_TOKEN(CPunctuation_LeftParenthesis);
+  ASSERT_TOKEN(CIdentifier);
+  ASSERT_TOKEN(CPunctuation_RightParenthesis);
+  ASSERT_TOKEN(CPunctuation_Semicolon);
+  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CKeyword_Return);
+  ASSERT_TOKEN(CConstant_Integer);
+  ASSERT_TOKEN(CPunctuation_Semicolon);
+  ASSERT_TOKEN(CPunctuation_newline);
+  ASSERT_TOKEN(CPunctuation_RightBrace);
+  ASSERT_TOKEN(CEOF);
 }
