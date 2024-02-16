@@ -88,6 +88,12 @@ string Lexer::stripWhitespace(const std::string &input) {
 }
 
 void Lexer::preprocess() {
+  Token tk = next_token();
+
+  while (tk.type != CToken::CEOF && tk.type != CToken::CUnknown) {
+    tk = next_token();
+  }
+
   removeLineSplices();
   removeSingleLineComments();
   removeMultiLineComments();
