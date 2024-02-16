@@ -2,8 +2,8 @@
 #define CLLVM_COMPILE_H
 
 #include <args.h>
-#include <preprocessor/preprocessor.h>
 #include <string>
+#include <lexer.h>
 
 using std::string;
 
