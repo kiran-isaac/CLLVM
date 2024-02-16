@@ -18,9 +18,9 @@ public:
   std::string lib;
   std::string flags;
   Args(int argc, char** argv);
-  std::string loadSourceToString(std::string source);
 };
 
-std::string searchIncludePathsForFile(const string& filename, Args *args);
+std::string loadSourceToString(std::string source);
+std::string searchIncludePathsForFile(const string& filename, vector<string> args);
 
 #endif /* CLLVM_ARGS_H */

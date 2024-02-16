@@ -2,6 +2,6 @@
 #include <compile.h>
 
 int compile(string source, Args *args) {
-  Lexer lexer = Lexer(source, args);
+  Lexer lexer = Lexer(source, args->includePaths);
   lexer.preprocess();
 }

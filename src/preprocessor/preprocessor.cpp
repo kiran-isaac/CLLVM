@@ -92,5 +92,7 @@ void Lexer::preprocess() {
   removeSingleLineComments();
   removeMultiLineComments();
 
+  dealWithIncludes();
+
   resetCursor();
 }

@@ -8,7 +8,7 @@
 class Lexer {
 public:
     Lexer(std::string source);
-    Lexer(std::string source, Args *args);
+    Lexer(std::string source, vector<string> includeDirs);
 
     Token next_token();
 
@@ -36,6 +36,10 @@ private:
 
     void removeSingleLineComments();
 
+    void removeMultiLineComments();
+
+    bool dealWithIncludes();
+
     int findIndexOfTokenWithID(int id);
 
     bool generateToken();
@@ -45,7 +49,6 @@ private:
 
     string stripWhitespace(const std::string &input);
 
-    void removeMultiLineComments();
 };
 
 #endif /* CLLVM_LEXER_H */

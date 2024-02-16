@@ -11,10 +11,10 @@ Lexer::Lexer(std::string source) {
   removeTrigraphs();
 }
 
-Lexer::Lexer(std::string source, Args *args) {
+Lexer::Lexer(std::string source, vector<string> includeDirs) {
   this->source = source;
   this->index = 0;
-  this->includeDirs = args->includePaths;
+  this->includeDirs = includeDirs;
 
   removeTrigraphs();
 }

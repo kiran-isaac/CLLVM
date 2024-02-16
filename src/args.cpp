@@ -29,7 +29,7 @@ Args::Args(int argc, char** argv) {
   }
 }
 
-std::string Args::loadSourceToString(std::string filename) {
+std::string loadSourceToString(std::string filename) {
   std::ifstream file(filename);
   std::string str;
   std::string file_contents;
