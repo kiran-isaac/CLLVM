@@ -3,10 +3,12 @@
 
 #include <lexer.h>
 #include <tokens.h>
+#include "args.h"
 
 class Lexer {
 public:
     Lexer(std::string source);
+    Lexer(std::string source, Args *args);
 
     Token next_token();
 
@@ -20,6 +22,8 @@ public:
 
     string sourceFromTokens();
 private:
+    vector<string> includeDirs;
+
     int line = 1;
     int column = 1;
     int index = 0;

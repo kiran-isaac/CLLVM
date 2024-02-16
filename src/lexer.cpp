@@ -9,17 +9,16 @@ Lexer::Lexer(std::string source) {
   this->index = 0;
 
   removeTrigraphs();
-
-  Token token = next_token();
-  while (token.type != CToken::CEOF) {
-    if (token.type == CToken::CUnknown) {
-      throw std::runtime_error("Unknown token: " + token.value);
-    }
-    token = next_token();
-  }
-
-  resetCursor();
 }
+
+Lexer::Lexer(std::string source, Args *args) {
+  this->source = source;
+  this->index = 0;
+  this->includeDirs = args->includePaths;
+
+  removeTrigraphs();
+}
+
 
 bool Lexer::generateToken() {
   // use the regular expressions in the tokens.h file to match the next token
